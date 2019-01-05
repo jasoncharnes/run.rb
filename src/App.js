@@ -4,8 +4,21 @@ import "./App.css";
 import { ruby } from "./Ruby";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      response: ""
+    };
+  }
+
+  updateResponse = char => {
+    console.log(char);
+    // this.setState({ response: this.state.response + char });
+  };
+
   render() {
-    ruby();
+    ruby('puts "Hello!"', this.updateResponse);
 
     return (
       <div className="App">
