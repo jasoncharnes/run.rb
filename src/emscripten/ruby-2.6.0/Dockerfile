@@ -24,10 +24,9 @@ RUN emmake make miniruby.bc EXEEXT=.bc
 
 # Build miniruby.wasm with the patched version of wasm-opt
 COPY --from=wasmopt /src/binaryen/bin/wasm-opt /usr/local/bin/wasm-opt
-RUN mkdir web && emcc -o web/miniruby.html miniruby.bc \
+RUN mkdir web && emcc -o web/miniruby.js miniruby.bc \
   -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
   -s TOTAL_MEMORY=67108864 \
   -s EMULATE_FUNCTION_POINTER_CASTS=1 \
   -s MODULARIZE=1 \
-  -s EXTRA_EXPORTED_RUNTIME_METHODS=['FS'] \
-  -s SINGLE_FILE=1
+  -s EXTRA_EXPORTED_RUNTIME_METHODS=['FS']
