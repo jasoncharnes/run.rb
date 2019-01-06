@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { ruby } from "./Ruby";
 
@@ -8,33 +7,47 @@ class App extends Component {
     super(props);
 
     this.state = {
+      compiling: false,
+      error: null,
+      input: "",
       response: ""
     };
   }
 
-  updateResponse = char => {
-    console.log(char);
-    // this.setState({ response: this.state.response + char });
+  compile = () => {
+    this.setState({ compiling: true, response: "" }, () => {
+      ruby(this.state.input, this.updateResponse, this.handleError);
+    });
+  };
+
+  handleError = error => {
+    this.setState({ compiling: false, error: error.join("") });
+  };
+
+  updateResponse = response => {
+    this.setState({
+      compiling: false,
+      error: null,
+      response: response.join("")
+    });
   };
 
   render() {
-    ruby('puts "Hello!"', this.updateResponse);
+    const compiledResult = this.state.error
+      ? this.state.error
+      : this.state.response;
 
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <textarea
+            onChange={evt => this.setState({ input: evt.target.value })}
+            value={this.state.input}
+          />
+          <textarea readOnly={true} value={compiledResult} />
+          <button disabled={this.state.compiling} onClick={this.compile}>
+            Run Ruby
+          </button>
         </header>
       </div>
     );

@@ -1,18 +1,34 @@
 import Module from "./emscripten/ruby-2.6.0/miniruby.js";
 import WASM from "./emscripten/ruby-2.6.0/miniruby.wasm";
 
-export let ruby = (snippet, onStdOut) => {
+let error = [];
+let result = [];
+
+export let ruby = (input, onStdOut, onStdErr) => {
   return Module({
     arguments: ["file.rb"],
     locateFile: function(path) {
-      console.log(WASM);
       if (path.endsWith(".wasm")) {
         return WASM;
       }
       return path;
     },
+    postRun: [
+      () => {
+        if (result) onStdOut(result);
+        if (error) console.log(error.join("")); // onStdErr(error);
+
+        error = [];
+        result = [];
+      }
+    ],
     sigaction: function(signum, act, oldact) {
       // ignore
+    },
+    stderr: function(output) {
+      var char = String.fromCharCode(output);
+
+      error.push(char);
     },
     stdin: function() {
       return null;
@@ -20,9 +36,9 @@ export let ruby = (snippet, onStdOut) => {
     stdout: function(output) {
       var char = String.fromCharCode(output);
 
-      onStdOut(char);
+      result.push(char);
     }
   }).then(function(Module) {
-    Module.FS.writeFile("file.rb", snippet);
+    Module.FS.writeFile("file.rb", input);
   });
 };
