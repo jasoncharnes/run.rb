@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { ruby } from "./Ruby";
+import ruby from "./Ruby";
 import AceEditor from "react-ace";
 
 import "brace/mode/ruby";

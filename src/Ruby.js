@@ -1,44 +1,48 @@
 import Module from "./emscripten/ruby-2.6.0/miniruby.js";
 import WASM from "./emscripten/ruby-2.6.0/miniruby.wasm";
 
-let error = [];
-let result = [];
-
-export let ruby = (input, onStdOut, onStdErr) => {
-  return Module({
-    arguments: ["file.rb"],
-    locateFile: function(path) {
-      if (path.endsWith(".wasm")) {
-        return WASM;
+function ruby(input) {
+  const result = {
+    output: [],
+  };
+  
+  return new Promise(function(resolve, reject) {
+    Module({
+      arguments: ["playground.rb"],
+      locateFile: function(path) {
+        if (path.endsWith(".wasm")) {
+          return WASM;
+        }
+        return path;
+      },
+      postRun: [
+        () => {
+          resolve(result);
+        }
+      ],
+      sigaction: function(signum, act, oldact) {
+        // ignore
+      },
+      
+      stdin: function() {
+        return null;
+      },
+      stdout: function(output) {
+        var char = String.fromCharCode(output);
+        result.output.push({ fd: 1, data: char });
+      },
+      stderr: function(output) {
+        var char = String.fromCharCode(output);
+        result.output.push({ fd: 2, data: char });
       }
-      return path;
-    },
-    postRun: [
-      () => {
-        if (result) onStdOut(result);
-        if (error) console.log(error.join("")); // onStdErr(error);
-
-        error = [];
-        result = [];
-      }
-    ],
-    sigaction: function(signum, act, oldact) {
-      // ignore
-    },
-    stderr: function(output) {
-      var char = String.fromCharCode(output);
-
-      error.push(char);
-    },
-    stdin: function() {
-      return null;
-    },
-    stdout: function(output) {
-      var char = String.fromCharCode(output);
-
-      result.push(char);
-    }
-  }).then(function(Module) {
-    Module.FS.writeFile("file.rb", input);
+    }).then(function(Module) {
+      Module.FS.writeFile("playground.rb", input);
+    }).then(function(Module) {
+      // `ruby` is about to run
+    }, function(error) {
+      reject(error);
+    });
   });
-};
+}
+
+export default ruby;
