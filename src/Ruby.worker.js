@@ -25,16 +25,18 @@ const Module = {
   stdin: function() {
     return null;
   },
-  stdout: function(output) {
-    var char = String.fromCharCode(output);
-    self.postMessage({ fd: 1, output: char });
+  print: function(output) {
+    self.postMessage({ fd: 1, output: output + "\n" });
   },
-  stderr: function(output) {
-    var char = String.fromCharCode(output);
-    self.postMessage({ fd: 2, output: char });
-  },
-  sigaction: function(signum, act, oldact) {
-    // ignore
+  printErr: function(output) {
+    switch (output) {
+    case "Calling stub instead of sigaction()":
+      // ignore
+      break;
+      
+    default:
+      self.postMessage({ fd: 2, output: output + "\n" });
+    }
   }
 };
 
