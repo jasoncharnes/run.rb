@@ -95,6 +95,7 @@ class App extends Component {
             allows you to run Ruby code in the browser. To get started, click
             the play button in the bottom of the editor.
           </p>
+          <hr />
           <p>
             A project by{" "}
             <a href="https://twitter.com/jmcharnes">Jason Charnes</a> and Will
