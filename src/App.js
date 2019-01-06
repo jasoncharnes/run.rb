@@ -11,33 +11,38 @@ class App extends Component {
     super(props);
 
     this.state = {
-      compiling: false,
+      running: false,
       error: null,
       input: "",
       response: ""
     };
   }
 
-  compile = () => {
-    this.setState({ compiling: true, response: "" }, () => {
-      ruby(this.state.input, this.updateResponse, this.handleError);
+  execute = () => {
+    this.setState({ running: true, response: "" }, () => {
+      ruby(this.state.input)
+        .then((result) => {
+          this.updateResponse(result);
+        }, (error) => {
+          this.handleError(error);
+        });
     });
   };
 
   handleError = error => {
-    this.setState({ compiling: false, error: error.join("") });
+    this.setState({ running: false, error: error });
   };
 
   updateResponse = response => {
     this.setState({
-      compiling: false,
+      running: false,
       error: null,
-      response: response.join("")
+      response: response.output.map((chunk) => chunk.data).join("")
     });
   };
 
   render() {
-    const compiledResult = this.state.error
+    const output = this.state.error
       ? this.state.error
       : this.state.response;
 
@@ -62,9 +67,9 @@ class App extends Component {
               tabSize: 2
             }}
           />
-          <textarea readOnly={true} value={compiledResult} />
+          <textarea readOnly={true} value={output} />
         </div>
-        <button disabled={this.state.compiling} onClick={this.compile}>
+        <button disabled={this.state.running} onClick={this.execute}>
           Run Ruby
         </button>
       </div>
