@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { ruby } from "./Ruby";
+import ruby from "./Ruby";
 import AceEditor from "react-ace";
 
 import "brace/mode/ruby";
@@ -11,39 +11,50 @@ class App extends Component {
     super(props);
 
     this.state = {
-      compiling: false,
+      running: false,
       error: null,
-      input: "",
+      input: "puts \"Hello, playground!\"",
       response: ""
     };
   }
 
-  compile = () => {
-    this.setState({ compiling: true, response: "" }, () => {
-      ruby(this.state.input, this.updateResponse, this.handleError);
+  execute = () => {
+    this.setState({ running: true, response: "" }, () => {
+      ruby(this.state.input)
+        .then((result) => {
+          this.updateResponse(result);
+        }, (error) => {
+          this.handleError(error);
+        });
     });
   };
 
   handleError = error => {
-    this.setState({ compiling: false, error: error.join("") });
+    this.setState({ running: false, error: error });
   };
 
   updateResponse = response => {
     this.setState({
-      compiling: false,
+      running: false,
       error: null,
-      response: response.join("")
+      response: response.output.map((chunk) => chunk.data).join("")
     });
   };
 
   render() {
-    const compiledResult = this.state.error
+    const output = this.state.error
       ? this.state.error
       : this.state.response;
 
     return (
       <div className="app">
-        <div className="code">
+        <header>
+          <h1>Ruby Playground</h1>
+          <button disabled={this.state.running} onClick={this.execute}>
+            Run
+          </button>
+        </header>
+        <section className="code">
           <AceEditor
             className="editor"
             mode="ruby"
@@ -56,17 +67,18 @@ class App extends Component {
             showPrintMargin={true}
             showGutter={true}
             highlightActiveLine={true}
+            height="100%"
+            width="100%"
             value={this.state.input}
             setOptions={{
               showLineNumbers: true,
               tabSize: 2
             }}
           />
-          <textarea readOnly={true} value={compiledResult} />
-        </div>
-        <button disabled={this.state.compiling} onClick={this.compile}>
-          Run Ruby
-        </button>
+        </section>
+        <section className="output">
+          <pre>{output}</pre>
+        </section>
       </div>
     );
   }
