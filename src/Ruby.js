@@ -1,13 +1,17 @@
 import Worker from "./Ruby.worker.js";
 
+// launch a Ruby worker before we need one
+var nextWorker = new Worker();
+
 function ruby(input) {
   const result = {
     output: [],
     exitStatus: null
   };
 
-  // launch a new Ruby worker
-  const worker = new Worker();
+  // grab the already-launched worker, and launch a replacement in the background
+  const worker = nextWorker;
+  nextWorker = new Worker();
 
   // send it our input
   worker.postMessage({ input: input });
