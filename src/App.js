@@ -37,7 +37,7 @@ class App extends Component {
     this.setState({
       running: false,
       error: null,
-      response: response.output.map((chunk) => chunk.data).join("")
+      response: response.output.map((chunk) => chunk.output).join("")
     });
   };
 
