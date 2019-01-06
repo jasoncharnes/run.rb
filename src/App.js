@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       running: false,
       error: null,
-      input: "",
+      input: "puts \"Hello, playground!\"",
       response: ""
     };
   }
@@ -48,7 +48,13 @@ class App extends Component {
 
     return (
       <div className="app">
-        <div className="code">
+        <header>
+          <h1>Ruby Playground</h1>
+          <button disabled={this.state.running} onClick={this.execute}>
+            Run
+          </button>
+        </header>
+        <section className="code">
           <AceEditor
             className="editor"
             mode="ruby"
@@ -61,17 +67,18 @@ class App extends Component {
             showPrintMargin={true}
             showGutter={true}
             highlightActiveLine={true}
+            height="100%"
+            width="100%"
             value={this.state.input}
             setOptions={{
               showLineNumbers: true,
               tabSize: 2
             }}
           />
-          <textarea readOnly={true} value={output} />
-        </div>
-        <button disabled={this.state.running} onClick={this.execute}>
-          Run Ruby
-        </button>
+        </section>
+        <section className="output">
+          <pre>{output}</pre>
+        </section>
       </div>
     );
   }
