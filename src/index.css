@@ -1,3 +1,4 @@
+html,
 body {
   margin: 0;
   padding: 0;
@@ -6,48 +7,28 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100%;
 }
 
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 30px;
-  padding: 5px;
-  background: #fee;
-  vertical-align: top;
+*:focus {
+  outline: none;
 }
 
-header h1 {
-  font-size: 30px;
-  line-height: 30px;
-  width: 300px;
-  display: inline-block;
-  margin: 0;
+.dark-grey {
+  color: #585860;
 }
 
-.code {
-  position: absolute;
-  top: 40px;
-  bottom: 25%;
-  left: 0;
-  right: 0;
+.red {
+  color: #ff7474;
 }
 
-.output {
-  position: absolute;
-  top: 75%;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 8px;
-  background: #111;
-  color: #eee;
-  overflow: scroll;
+a {
+  color: #ff7474;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.output pre {
-  /* match the code input */
-  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+a:hover {
+  text-decoration: underline;
 }

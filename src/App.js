@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
+import Logo from "./logo.svg";
+import Play from "./play.svg";
 import ruby from "./Ruby";
 import AceEditor from "react-ace";
 
@@ -13,19 +15,21 @@ class App extends Component {
     this.state = {
       running: false,
       error: null,
-      input: "puts \"Hello, playground!\"",
+      input: 'puts "Hello, playground!"',
       response: ""
     };
   }
 
   execute = () => {
-    this.setState({ running: true, response: "" }, () => {
-      ruby(this.state.input)
-        .then((result) => {
+    this.setState({ running: true, response: "Running..." }, () => {
+      ruby(this.state.input).then(
+        result => {
           this.updateResponse(result);
-        }, (error) => {
+        },
+        error => {
           this.handleError(error);
-        });
+        }
+      );
     });
   };
 
@@ -37,23 +41,16 @@ class App extends Component {
     this.setState({
       running: false,
       error: null,
-      response: response.output.map((chunk) => chunk.output).join("")
+      response: response.output.map(chunk => chunk.output).join("")
     });
   };
 
   render() {
-    const output = this.state.error
-      ? this.state.error
-      : this.state.response;
+    const output = this.state.error ? this.state.error : this.state.response;
+    const runClass = this.state.running ? "run active" : "run";
 
     return (
       <div className="app">
-        <header>
-          <h1>Ruby Playground</h1>
-          <button disabled={this.state.running} onClick={this.execute}>
-            Run
-          </button>
-        </header>
         <section className="code">
           <AceEditor
             className="editor"
@@ -75,6 +72,34 @@ class App extends Component {
               tabSize: 2
             }}
           />
+          <img
+            alt="run"
+            className={runClass}
+            onClick={this.execute}
+            src={Play}
+          />
+        </section>
+        <section className="info">
+          <img alt="logo" className="logo" src={Logo} />
+          <p>
+            Currently running <strong>Ruby 2.6.0</strong>
+          </p>
+          <p>
+            <strong>
+              <span className="dark-grey">run</span>
+              <span className="red">.rb</span>
+            </strong>{" "}
+            <small>
+              ("<i>runner bee</i>")
+            </small>{" "}
+            allows you to run Ruby code in the browser. To get started, click
+            the play button in the bottom of the editor.
+          </p>
+          <p>
+            A project by{" "}
+            <a href="https://twitter.com/jmcharnes">Jason Charnes</a> and Will
+            Glynn.
+          </p>
         </section>
         <section className="output">
           <pre>{output}</pre>

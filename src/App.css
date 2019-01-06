@@ -1,21 +1,70 @@
 .code {
-  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 25%;
+  left: 0;
+  right: 0;
+}
+
+.output {
+  position: absolute;
+  top: 75%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: #111;
+  color: #eee;
+  overflow: scroll;
+}
+
+.output pre {
+  /* match the code input */
+  font: 12px / normal "Monaco", "Menlo", "Ubuntu Mono", "Consolas",
+    "source-code-pro", monospace;
 }
 
 .editor {
   width: 50% !important;
 }
 
-textarea {
-  background-color: black;
-  border: 0;
-  color: white;
-  font-size: 14px;
-  margin-top: 0;
-  padding: 10px;
-  width: 50% !important;
+.info {
+  line-height: 1.5em;
+  position: absolute;
+  top: 0;
+  bottom: 25%;
+  left: 50%;
+  right: 0;
+  padding: 20px;
 }
 
-*:focus {
-  outline: none;
+.logo {
+  height: 100px;
+}
+
+.run {
+  cursor: pointer;
+  height: 60px;
+  position: absolute;
+  bottom: 10px;
+  right: calc(50% + 10px);
+  z-index: 50;
+}
+
+.run:hover {
+  opacity: 0.9;
+}
+
+.run.active {
+  animation: App-logo-spin infinite 5s linear;
+  opacity: 0.3;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
