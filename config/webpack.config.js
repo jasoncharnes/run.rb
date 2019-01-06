@@ -166,7 +166,10 @@ module.exports = function(webpackEnv) {
               .relative(paths.appSrc, info.absoluteResourcePath)
               .replace(/\\/g, "/")
         : isEnvDevelopment &&
-          (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, "/"))
+          (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, "/")),
+
+      // https://github.com/webpack/webpack/issues/6642#issuecomment-421857049
+      globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     optimization: {
       minimize: isEnvProduction,
@@ -321,6 +324,10 @@ module.exports = function(webpackEnv) {
                 limit: 10000,
                 name: "static/media/[name].[hash:8].[ext]"
               }
+            },
+            {
+              test: /\.worker\.js$/,
+              use: { loader: 'worker-loader' }
             },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.

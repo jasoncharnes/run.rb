@@ -1,46 +1,52 @@
-import Module from "./emscripten/ruby-2.6.0/miniruby.js";
-import WASM from "./emscripten/ruby-2.6.0/miniruby.wasm";
+import Worker from "./Ruby.worker.js";
+
+// launch a Ruby worker before we need one
+var nextWorker = new Worker();
 
 function ruby(input) {
   const result = {
     output: [],
+    exitStatus: null
   };
-  
-  return new Promise(function(resolve, reject) {
-    Module({
-      arguments: ["playground.rb"],
-      locateFile: function(path) {
-        if (path.endsWith(".wasm")) {
-          return WASM;
+
+  // grab the already-launched worker, and launch a replacement in the background
+  const worker = nextWorker;
+  nextWorker = new Worker();
+
+  // send it our input
+  worker.postMessage({ input: input });
+
+  // wrap the worker lifecycle in a Promise
+  return new Promise((resolve, reject) => {
+    worker.onerror = (event) => {
+      console.error("Ruby worker error: ", event);
+      reject(event.message);
+      worker.terminate();
+    }
+
+    worker.addEventListener("message", function (event) {
+      const msg = event.data;
+
+      if (msg.error) {
+        reject(event.error);
+        worker.terminate();
+
+      } else if (msg.complete) {
+        if (event.exitStatus) {
+          result.exitStatus = event.exitStatus;
         }
-        return path;
-      },
-      postRun: [
-        () => {
-          resolve(result);
-        }
-      ],
-      sigaction: function(signum, act, oldact) {
-        // ignore
-      },
-      
-      stdin: function() {
-        return null;
-      },
-      stdout: function(output) {
-        var char = String.fromCharCode(output);
-        result.output.push({ fd: 1, data: char });
-      },
-      stderr: function(output) {
-        var char = String.fromCharCode(output);
-        result.output.push({ fd: 2, data: char });
+
+        resolve(result);
+        worker.terminate();
+
+      } else if (msg.output) {
+        result.output.push(msg);
+        // continue running the worker
+
+      } else {
+        // unhandled
+        console.log("unhandled Ruby worker message", event);
       }
-    }).then(function(Module) {
-      Module.FS.writeFile("playground.rb", input);
-    }).then(function(Module) {
-      // `ruby` is about to run
-    }, function(error) {
-      reject(error);
     });
   });
 }
