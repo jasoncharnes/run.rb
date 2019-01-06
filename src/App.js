@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
 import { ruby } from "./Ruby";
+import AceEditor from "react-ace";
+
+import "brace/mode/ruby";
+import "brace/theme/github";
 
 class App extends Component {
   constructor(props) {
@@ -38,17 +42,31 @@ class App extends Component {
       : this.state.response;
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <textarea
-            onChange={evt => this.setState({ input: evt.target.value })}
+      <div className="app">
+        <div className="code">
+          <AceEditor
+            className="editor"
+            mode="ruby"
+            theme="github"
+            onLoad={this.onLoad}
+            onChange={value => {
+              this.setState({ input: value });
+            }}
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
             value={this.state.input}
+            setOptions={{
+              showLineNumbers: true,
+              tabSize: 2
+            }}
           />
           <textarea readOnly={true} value={compiledResult} />
-          <button disabled={this.state.compiling} onClick={this.compile}>
-            Run Ruby
-          </button>
-        </header>
+        </div>
+        <button disabled={this.state.compiling} onClick={this.compile}>
+          Run Ruby
+        </button>
       </div>
     );
   }

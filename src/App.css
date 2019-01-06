@@ -1,4 +1,21 @@
+.code {
+  display: flex;
+}
+
+.editor {
+  width: 50% !important;
+}
+
 textarea {
-  height: 60vh;
-  width: 40%;
+  background-color: black;
+  border: 0;
+  color: white;
+  font-size: 14px;
+  margin-top: 0;
+  padding: 10px;
+  width: 50% !important;
+}
+
+*:focus {
+  outline: none;
 }
