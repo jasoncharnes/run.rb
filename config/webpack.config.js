@@ -172,6 +172,8 @@ module.exports = function(webpackEnv) {
       globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     optimization: {
+      // work around https://github.com/webpack-contrib/worker-loader/issues/176
+      noEmitOnErrors: false,
       minimize: isEnvProduction,
       minimizer: [
         // This is only used in production mode
