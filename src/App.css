@@ -68,3 +68,7 @@
     transform: rotate(360deg);
   }
 }
+
+.ace-github .ace_print-margin {
+  width: 0px !important;
+}
