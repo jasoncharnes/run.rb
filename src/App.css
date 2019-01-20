@@ -38,6 +38,35 @@
   padding: 20px;
 }
 
+@media screen and (max-width: 768px) {
+  .editor {
+    width: 100% !important;
+  }
+
+  .code {
+    height: 300px;
+    position: relative;
+    max-width: 100%;
+  }
+
+  .info {
+    left: 0;
+    overflow-wrap: break-word;
+    position: relative;
+    max-width: 100%;
+  }
+
+  .output {
+    bottom: 0;
+    min-height: 250px;
+    position: relative;
+  }
+
+  .run {
+    right: 15px !important;
+  }
+}
+
 .logo {
   height: 100px;
 }

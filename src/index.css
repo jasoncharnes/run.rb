@@ -11,6 +11,13 @@ body {
   height: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  html,
+  body {
+    overflow-y: scroll;
+  }
+}
+
 *:focus {
   outline: none;
 }

@@ -51,34 +51,6 @@ class App extends Component {
 
     return (
       <div className="app">
-        <section className="code">
-          <AceEditor
-            className="editor"
-            mode="ruby"
-            theme="github"
-            onLoad={this.onLoad}
-            onChange={value => {
-              this.setState({ input: value });
-            }}
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            height="100%"
-            width="100%"
-            value={this.state.input}
-            setOptions={{
-              showLineNumbers: true,
-              tabSize: 2
-            }}
-          />
-          <img
-            alt="run"
-            className={runClass}
-            onClick={this.execute}
-            src={Play}
-          />
-        </section>
         <section className="info">
           <img alt="logo" className="logo" src={Logo} />
           <p>
@@ -109,6 +81,34 @@ class App extends Component {
             <a href="https://twitter.com/jmcharnes">Jason Charnes</a> and{" "}
             <a href="https://willglynn.com">Will Glynn.</a>
           </p>
+        </section>
+        <section className="code">
+          <AceEditor
+            className="editor"
+            mode="ruby"
+            theme="github"
+            onLoad={this.onLoad}
+            onChange={value => {
+              this.setState({ input: value });
+            }}
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            height="100%"
+            width="100%"
+            value={this.state.input}
+            setOptions={{
+              showLineNumbers: true,
+              tabSize: 2
+            }}
+          />
+          <img
+            alt="run"
+            className={runClass}
+            onClick={this.execute}
+            src={Play}
+          />
         </section>
         <section className="output">
           <pre>{output}</pre>
