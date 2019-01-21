@@ -63,10 +63,6 @@
     min-height: 250px;
     position: relative;
   }
-
-  .run {
-    right: 15px !important;
-  }
 }
 
 .logo {
@@ -78,7 +74,7 @@
   height: 60px;
   position: absolute;
   bottom: 10px;
-  right: calc(50% + 10px);
+  right: 10px;
   z-index: 50;
 }
 
