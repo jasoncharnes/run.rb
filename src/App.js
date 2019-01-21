@@ -15,7 +15,7 @@ class App extends Component {
     this.state = {
       running: false,
       error: null,
-      input: 'puts "Hello, playground!"',
+      input: 'puts "Hello, run.rb!"',
       response: ""
     };
   }
