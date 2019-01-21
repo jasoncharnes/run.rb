@@ -4,6 +4,7 @@
   bottom: 25%;
   left: 0;
   right: 0;
+  width: 50%;
 }
 
 .output {
@@ -16,6 +17,7 @@
   background: #111;
   color: #eee;
   overflow: scroll;
+  width: 100%;
 }
 
 .output pre {
