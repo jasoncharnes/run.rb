@@ -37,6 +37,7 @@
   left: 50%;
   right: 0;
   padding: 20px;
+  z-index: 1;
 }
 
 @media screen and (max-width: 768px) {
@@ -62,6 +63,10 @@
     min-height: 250px;
     position: relative;
   }
+
+  .run {
+    right: 10px !important;
+  }
 }
 
 .logo {
@@ -73,8 +78,8 @@
   height: 60px;
   position: absolute;
   bottom: 10px;
-  right: 10px;
   z-index: 50;
+  right: calc(50% + 10px);
 }
 
 .run:hover {
