@@ -69,7 +69,7 @@ class App extends Component {
           </p>
           <p>
             <small>
-              This project is still in it's very early stages. Feel free to look
+              This project is still in its very early stages. Feel free to look
               around{" "}
               <a href="https://github.com/jasoncharnes/run.rb">
                 the source code
