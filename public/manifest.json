@@ -1,7 +1,22 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "run.rb",
+  "name": "run.rb - Runner Bee",
   "icons": [
+    {
+        "src": "apple-touch-icon.png",
+        "sizes": "180x180",
+        "type": "image/png"
+    },
+    {
+        "src": "favicon-32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+    },
+    {
+        "src": "favicon-16x16.png",
+        "sizes": "16x16",
+        "type": "image/png"
+    },
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
@@ -10,6 +25,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#ff7474",
   "background_color": "#ffffff"
 }
