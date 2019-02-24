@@ -54,7 +54,7 @@ class App extends Component {
         <section className="info">
           <img alt="logo" className="logo" src={Logo} />
           <p>
-            Currently running <strong>Ruby 2.6.0</strong>
+            Currently running <strong>Ruby 2.6.1</strong>
           </p>
           <p>
             <strong>

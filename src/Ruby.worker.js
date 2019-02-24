@@ -1,5 +1,5 @@
-import run from "./emscripten/ruby-2.6.0/miniruby.js";
-import WASM from "./emscripten/ruby-2.6.0/miniruby.wasm";
+import run from "./emscripten/ruby-2.6.1/miniruby.js";
+import WASM from "./emscripten/ruby-2.6.1/miniruby.wasm";
 
 const input = new Promise((resolve, reject) => {
   self.addEventListener('message', (msg) => {

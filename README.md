@@ -12,7 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] Include the Ruby Standard Library
 - [ ] Add the ability to save "snippets" and share them
 - [ ] Provide JS libraries for run.rb supported versions of Ruby
-  - Something like: `<script src=“https://runrb.io/ruby-2.6.0”>` and `ruby(“yourcode”) // => Promise`
+  - Something like: `<script src="https://runrb.io/ruby-2.6.1">` and `ruby("yourcode") // => Promise`
 - [ ] You [tell us](https://github.com/jasoncharnes/run.rb/issues/new)
 
 ## Compiling Ruby to WASM
