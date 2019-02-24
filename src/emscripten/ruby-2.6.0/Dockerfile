@@ -1,12 +1,4 @@
-# Build a patched version of wasm-opt
-FROM trzeci/emscripten AS wasmopt
-RUN git clone https://github.com/WebAssembly/binaryen.git --depth 1 --branch version_63
-ADD binaryen.patch /src
-WORKDIR /src/binaryen
-RUN patch -p1 </src/binaryen.patch
-RUN cmake . && make
-
-FROM trzeci/emscripten
+FROM trzeci/emscripten:sdk-tag-1.38.28-64bit
 RUN apt-get update && \
   apt-get install -y autoconf bison ruby less vim && \
   apt-get clean
@@ -22,8 +14,7 @@ RUN autoconf
 RUN emconfigure ./configure --disable-fiber-coroutine --disable-dln
 RUN emmake make miniruby.bc EXEEXT=.bc
 
-# Build miniruby.wasm with the patched version of wasm-opt
-COPY --from=wasmopt /src/binaryen/bin/wasm-opt /usr/local/bin/wasm-opt
+# Build miniruby.wasm
 RUN mkdir web && emcc -o web/miniruby.js miniruby.bc \
   -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
   -s TOTAL_MEMORY=67108864 \
