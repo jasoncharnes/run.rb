@@ -1,0 +1,36 @@
+diff --git a/configure.ac b/configure.ac
+index 2c4d288..49df04b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -225,8 +225,8 @@ AC_SUBST(LD)
+ AS_IF([test "$GCC" = yes], [
+     linker_flag=-Wl,
+     : ${optflags=-O3}
+-    gcc_major=`echo =__GNUC__ | $CC -E -xc - | sed '/^=/!d;s///'`
+-    gcc_minor=`echo =__GNUC_MINOR__ | $CC -E -xc - | sed '/^=/!d;s///'`
++    gcc_major=`echo =__GNUC__ > /tmp/a.c; $CC -E -xc /tmp/a.c | sed '/^=/!d;s///'`
++    gcc_minor=`echo =__GNUC_MINOR__ > /tmp/a.c; $CC -E -xc /tmp/a.c | sed '/^=/!d;s///'`
+     test -n "$gcc_major" || gcc_major=0
+     test -n "$gcc_minor" || gcc_minor=0
+     AS_CASE(["x$CC"], [xicc], [
+diff --git a/thread_pthread.c b/thread_pthread.c
+index d8d3184..9f437ef 100644
+--- a/thread_pthread.c
++++ b/thread_pthread.c
+@@ -1693,12 +1693,10 @@ ubf_timer_pthread_create(rb_pid_t current)
+     if (setup_communication_pipe_internal(timer_pthread.low) < 0)
+         return;
+ 
+-    err = pthread_create(&timer_pthread.thid, 0, timer_pthread_fn, GET_VM());
+-    if (!err)
+-        timer_pthread.owner = current;
+-    else
+-        rb_warn("pthread_create failed for timer: %s, signals racy",
+-                strerror(err));
++    /* Emscripten kind of has threading: https://caniuse.com/#feat=sharedarraybuffer
++     * Let's not use it just yet though, and instead suffer through timer brokenness.
++     */
++    return;
+ #endif
+ }
+ 
