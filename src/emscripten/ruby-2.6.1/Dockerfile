@@ -1,4 +1,4 @@
-FROM trzeci/emscripten:sdk-tag-1.38.28-64bit
+FROM trzeci/emscripten:sdk-tag-1.38.32-64bit
 RUN apt-get update && \
   apt-get install -y autoconf bison ruby less vim && \
   apt-get clean
@@ -17,7 +17,8 @@ RUN emmake make miniruby.bc EXEEXT=.bc
 # Build miniruby.wasm
 RUN mkdir web && emcc -o web/miniruby.js miniruby.bc \
   -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-  -s TOTAL_MEMORY=67108864 \
+  -s ALLOW_MEMORY_GROWTH=1 \
   -s EMULATE_FUNCTION_POINTER_CASTS=1 \
   -s MODULARIZE=1 \
-  -s EXTRA_EXPORTED_RUNTIME_METHODS=['FS']
+  -s EXTRA_EXPORTED_RUNTIME_METHODS=['FS'] \
+  -Oz
