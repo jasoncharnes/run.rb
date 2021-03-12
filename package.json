@@ -42,7 +42,7 @@
     "react": "^16.7.0",
     "react-ace": "^6.3.2",
     "react-app-polyfill": "^0.2.0",
-    "react-dev-utils": "^7.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.7.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
